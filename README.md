@@ -99,6 +99,6 @@ Upon launching ASAManager, you will see a user-friendly interface with various t
   A: Yes, use the Server Selection dropdown to choose the server you want to manage.
 
 ## 10. Feedback and Support
-For feedback, bug reports, or assistance, please visit [ASAManager GitHub Repository](https://github.com/yourrepository).
+For feedback, bug reports, or assistance, please visit [ASAManager GitHub Repository](https://github.com/Limitspassed/ASAManager).
 
 Feel free to reach out to us through the GitHub repository for any additional questions or support requests.

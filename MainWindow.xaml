@@ -1,0 +1,183 @@
+﻿<!--
+    Ark Server Manager (ASAManager)
+    Copyright (c) 2023 Limitspassed (John)
+    GitHub Repository: https://github.com/Limitspassed/ASAManager
+
+    This software is licensed under the GNU General Public License v3.0.
+    For the full license text, see: https://opensource.org/licenses/GPL-3.0
+-->
+    
+    <Window x:Class="ASAManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArkServer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1578">
+    <Grid Margin="10">
+
+        <!-- Server Path GroupBox -->
+        <GroupBox Header="Server Path" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="7,-8,0,0" Width="226">
+            <Grid Height="291">
+                <!-- Server Path TextBox -->
+                <Label Content="Server Path:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtServerPath" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Margin="10,20,0,0"/>
+                <!-- Server Selection ComboBox -->
+                <Label Content="Server Selection:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0"/>
+                <ComboBox x:Name="cmbServerSelection" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,70,0,0"/>
+                <!-- Buttons -->
+                <Button Content="Clear Server Selection" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168" Margin="10,185,0,0" Click="btnClearServerSelection_Click"/>
+                <Button Content="Update Server List" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168" Margin="10,110,0,0" Click="btnUpdateServerList_Click"/>
+                <Button Content="Save Settings" VerticalAlignment="Center" HorizontalAlignment="Left" Width="168" Margin="10,0,0,0" Click="btnSaveSettings_Click"/>
+                <Button Content="Load Settings" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168" Margin="10,160,0,0" Click="btnLoadSettings_Click"/>
+                <Button Content="Update start.bat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="10,210,0,0" Click="btnUpdateStartBat_Click"/>
+                <Button Content="Update GameUserSettings.ini" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="10,235,0,0" Click="btnUpdateGameUserSettingsIni_Click" />
+
+
+            </Grid>
+        </GroupBox>
+
+        <!-- Auto Restart Options GroupBox -->
+        <GroupBox Header="Auto Restart Options" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="11,530,0,0" Width="222">
+            <Grid Margin="0,0,4,0">
+                <!-- Auto Restart Options ComboBox -->
+                <ComboBox x:Name="cmbAutoRestartOptions" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,10,0,0">
+                    <!-- Add your auto-restart options here -->
+                    <ComboBoxItem Content="Option 1"/>
+                    <!-- This is just an example I plan on getting this working at some point if someone else doesn't -->
+
+                </ComboBox>
+                <!-- Start Server If Not Running CheckBox -->
+                <CheckBox x:Name="chkStartServerIfNotRunning" Content="Start Server If Not Running" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,40,0,0"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Server Settings GroupBox -->
+        <GroupBox Header="Server Settings" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="233,-8,0,0" Width="226" Height="239">
+            <Grid HorizontalAlignment="Left" Width="160" Height="239">
+                <!-- Server Name TextBox -->
+                <Label Content="Server Name:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtServerName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,20,0,0"/>
+                <!-- Server Password TextBox -->
+                <Label Content="Server Password:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0"/>
+                <TextBox x:Name="txtServerPassword" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,70,0,0"/>
+                <!-- Admin Password TextBox -->
+                <Label Content="Admin Password:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,100,0,0"/>
+                <TextBox x:Name="txtAdminPassword" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,120,0,0"/>
+                <!-- Mod List TextBox -->
+                <Label Content="Mod List:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,150,0,0"/>
+                <TextBox x:Name="txtModList" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,170,0,0"/>
+                <!-- Max Players TextBox -->
+                <Label Content="Max Players:" HorizontalAlignment="Left" Margin="0,193,0,19"/>
+                <TextBox x:Name="txtMaxPlayers" VerticalAlignment="Top" HorizontalAlignment="Left" Width="50" Margin="75,197,0,0"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Map Settings GroupBox -->
+        <GroupBox Header="Map Settings" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="238,304,0,0" Width="221">
+            <Grid>
+                <!-- Map TextBox -->
+                <Label Content="Map:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtMap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,20,0,0"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Port Settings GroupBox -->
+        <GroupBox Header="Port Settings" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="237,233,0,0" Width="222">
+            <Grid>
+                <!-- Port TextBox -->
+                <Label Content="Port:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtPort" VerticalAlignment="Top" HorizontalAlignment="Left" Width="50" Margin="39,4,0,0"/>
+                <!-- Query Port TextBox -->
+                <Label Content="Query Port:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,27,0,0"/>
+                <TextBox x:Name="txtQueryPort" VerticalAlignment="Top" HorizontalAlignment="Left" Width="50" Margin="70,31,0,0" RenderTransformOrigin="0.33,-0.747"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Battle Eye GroupBox -->
+        <GroupBox Header="Battle Eye" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="238,366,0,0" Width="120">
+            <Grid>
+                <!-- Battle Eye CheckBox -->
+                <CheckBox x:Name="chkBattleEye" Content="Enable" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,20,0,0" Checked="chkBattleEye_Checked_1"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- RCON Settings GroupBox -->
+        <GroupBox Header="RCON Settings" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="464,-10,0,0" Width="250">
+            <Grid Height="270" Margin="0,0,-2,0">
+                <TextBlock Text="RCON Executable Path:" Margin="14,10,94,243"/>
+                <TextBox x:Name="txtRconExecutablePath" Height="20" Margin="10,27,54,223"/>
+                <!-- RCON IP TextBox -->
+                <Label Content="RCON IP:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,47,0,0" Width="68"/>
+                <TextBox x:Name="txtRconIP" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Margin="10,73,0,0"/>
+                <!-- RCON Port TextBox -->
+                <Label Content="RCON Port:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,91,0,0"/>
+                <TextBox x:Name="txtRconPort" VerticalAlignment="Top" HorizontalAlignment="Left" Width="50" Margin="10,117,0,0"/>
+                <TextBlock Text="RCON Command:" Margin="14,140,94,113"/>
+                <TextBox x:Name="txtRconCommand" Height="20" Margin="10,162,54,88"/>
+                <Button Content="Send RCON Command" Click="btnSendRconCommand_Click" Margin="10,190,54,57"/>
+                <!-- Enable RCON CheckBox -->
+                <CheckBox x:Name="chkEnableRCON" Content="Enable RCON" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,245,0,0" Checked="chkEnableRCON_Checked"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Install Server GroupBox -->
+        <GroupBox Header="Install Server" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="11,303,0,0" Height="223">
+            <Grid Height="204">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105*"/>
+                    <ColumnDefinition Width="113*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Install Server TextBox -->
+                <Label Content="Install Server:" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtInstallServer" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Margin="10,20,0,0"></TextBox>
+                <!-- Specify SteamCMD Path -->
+                <Label Content="Specify SteamCMD Path:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0"/>
+                <TextBox x:Name="txtSteamCmdPath" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Margin="10,70,0,0"/>
+                <!-- Start/Stop Buttons -->
+                <Button x:Name="btnInstallServer" Content="Install Server" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="10,102,0,0" Click="btnInstallServer_Click"/>
+                <Button x:Name="btnUpdateServer" Content="Update Server" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="10,177,0,0" Click="btnUpdateServer_Click"/>
+                <Button x:Name="btnStartServer" Content="Start Server" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="10,127,0,0" Click="btnStartServer_Click"/>
+                <Button x:Name="btnStopServer" Content="Stop Server" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="10,152,0,0" Click="btnStopServer_Click"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Backup Settings GroupBox -->
+        <GroupBox Header="Backup Settings" Margin="465,281,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250">
+            <StackPanel Margin="10">
+                <CheckBox x:Name="chkScheduledBackup" Content="Enable Scheduled Backup" Margin="0,0,0,5" Checked="chkScheduledBackup_Checked" Unchecked="chkScheduledBackup_Checked"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Backup Interval:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtBackupInterval" Width="40" Margin="5" Text="15"/>
+                    <TextBlock Text="minutes" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Backup Location:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtBackupLocation" Width="118" Margin="5"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Keep Oldest Backup for:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtKeepOldestBackup" Width="40" Margin="5" Text="7"/>
+                    <TextBlock Text="days" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="INI File Editor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="420" Margin="717,-9,0,0">
+            <Grid>
+                <ComboBox x:Name="cmbIniFiles" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="10,10,0,0">
+                    <ComboBoxItem Content="game.ini"/>
+                    <ComboBoxItem Content="gameusersettings.ini"/>
+                </ComboBox>
+
+                <Button Content="Load Ini File" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="220,10,0,0" Click="btnLoadIniFile_Click"/>
+
+                <TextBox x:Name="txtIniContent" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Height="300" Margin="10,50,0,0" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"/>
+
+                <Button Content="Save File" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="10,360,0,0" Click="btnSaveIniFile_Click"/>
+            </Grid>
+        </GroupBox>
+        <TextBox x:Name="outputTextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="400" Height="200" Margin="238,458,0,0" IsReadOnly="True"/>
+    </Grid>
+</Window>

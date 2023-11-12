@@ -895,30 +895,41 @@ namespace ASAManager
                 }
 
                 // Check if steamcmd.exe exists or download and extract SteamCMD
-                string steamCmdExePath = Path.Combine(steamcmdPath, "steamcmd.exe");
+                string steamCmdExePath = Path.Combine(steamCmdFolder, "steamcmd.exe");
                 if (!File.Exists(steamCmdExePath))
                 {
                     outputTextBox.AppendText($"SteamCMD executable not found at {steamCmdExePath}, downloading and extracting...\n");
                     await DownloadSteamCmd(steamCmdFolder);
                 }
 
-                // Update ARK server asynchronously
-                string updateCommand = $"{steamCmdExePath} +login anonymous +force_install_dir {arkServerInstallPath} +app_update 2430930 validate +quit";
-                outputTextBox.AppendText($"Update Command: {updateCommand}\n");
+                // Check again if steamcmd.exe exists
+                if (File.Exists(steamCmdExePath))
+                {
+                    // Update ARK server asynchronously
+                    string updateCommand = $"{steamCmdExePath} +login anonymous +force_install_dir {arkServerInstallPath} +app_update 2430930 validate +quit";
+                    outputTextBox.AppendText($"Update Command: {updateCommand}\n");
 
-                Task updateTask = Task.Run(() => RunCommand(updateCommand));
+                    Task updateTask = Task.Run(() => RunCommand(updateCommand));
 
-                // Wait for the completion of the update task
-                await updateTask;
+                    // Wait for the completion of the update task
+                    await updateTask;
 
-                // Additional logging
-                outputTextBox.AppendText($"Update completed. Exit Code: {updateTask.Status}\n");
+                    // Additional logging
+                    outputTextBox.AppendText($"Update completed. Exit Code: {updateTask.Status}\n");
+                }
+                else
+                {
+                    // Log an error message or display it in the UI
+                    outputTextBox.AppendText($"Error: SteamCMD executable not found.\n");
+                }
             }
             catch (Exception ex)
             {
                 outputTextBox.AppendText($"Error: {ex.Message}\n");
             }
         }
+
+
         // End Update Server
         // Stop Install Server Group Box
 

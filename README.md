@@ -1,4 +1,8 @@
-# ASAManager - User Guide
+﻿# ASAManager - User Guide
+
+## Join Our Discord Community 🌐
+Connect with other ASAManager users, share your experiences, and get the latest updates by joining our Discord community.
+[Join ASAManager Discord](https://discord.gg/ce4VPBxxAC)
 
 ## Table of Contents
 1. [Introduction](#introduction)

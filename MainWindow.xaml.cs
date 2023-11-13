@@ -955,7 +955,7 @@ namespace ASAManager
                 await DownloadMcrcon(mcrconPath);
             }
 
-            string rconCommand = txtRconCommand.Text;
+            string rconCommand = $"\"" + txtRconCommand.Text+"\"";
 
             // Execute the RCON command and capture the output
             string output = await ExecuteRconCommandAsync(mcrconPath, rconIp, rconPort, rconAdminPassword, rconCommand);

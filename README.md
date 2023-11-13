@@ -4,6 +4,9 @@
 Connect with other ASAManager users, share your experiences, and get the latest updates by joining our Discord community.
 [Join ASAManager Discord](https://discord.gg/ce4VPBxxAC)
 
+Join the discussion on Reddit
+[Join ASAManager Discord](https://www.reddit.com/r/ARK/comments/17tvqt7/exciting_news_for_ark_survival_ascended_server/)
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)

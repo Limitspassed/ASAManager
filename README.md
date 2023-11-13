@@ -5,7 +5,11 @@ Connect with other ASAManager users, share your experiences, and get the latest 
 [Join ASAManager Discord](https://discord.gg/ce4VPBxxAC)
 
 Join the discussion on Reddit
-[Join ASAManager Discord](https://www.reddit.com/r/ARK/comments/17tvqt7/exciting_news_for_ark_survival_ascended_server/)
+[Join ASAManager Reddit Discussion](https://www.reddit.com/r/ARK/comments/17tvqt7/exciting_news_for_ark_survival_ascended_server/)
+
+[Watch the video on how to use ASAManager](https://www.youtube.com/watch?v=6LZ4K6dEhBE&ab_channel=LimitsPassed)
+
+![image](https://github.com/Limitspassed/ASAManager/assets/38270991/0995ff2a-b19d-43d9-afec-5ef3ee191de5)
 
 ## Table of Contents
 1. [Introduction](#introduction)

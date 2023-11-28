@@ -510,7 +510,7 @@ namespace ASAManager
                 await installationTask;
 
                 // Additional logging
-                outputTextBox.AppendText($"Installation completed. Exit Code: {installationTask.Status}\n");
+                outputTextBox.AppendText($"Installation completed.\n");
             }
             catch (Exception ex)
             {
@@ -546,17 +546,23 @@ namespace ASAManager
         {
             StringBuilder content = new StringBuilder();
 
-            // Assuming txtModList.Text contains mod IDs separated by commas
-            string mods = !string.IsNullOrWhiteSpace(serverSettings.ModList) ? $"-mods={serverSettings.ModList}" : "";
+            // Assuming serverSettings.ModList contains mod IDs separated by commas
+            string mods = !string.IsNullOrWhiteSpace(serverSettings.ModList) ? $"-mods=\"{serverSettings.ModList}\"" : "";
 
-            content.AppendLine($"start ArkAscendedServer.exe {serverSettings.Map}?"
-                            + $"listen?SessionName={serverSettings.ServerName}?"
-                            + $"Port={serverSettings.Port}?"
-                            + $"QueryPort={serverSettings.QueryPort}?"
-                            + $"MaxPlayers={serverSettings.MaxPlayers} -UseBattlEye {mods}");
+            // Determine the BattlEye option based on the checkbox state
+            string battleyeOption = chkBattleEye.IsChecked == true ? "-usebattleye" : "-nobattleye";
+
+            content.AppendLine($"start ArkAscendedServer.exe \"{serverSettings.Map}\"?"
+                            + $"listen?SessionName=\"{serverSettings.ServerName}\"?"
+                            + $"Port=\"{serverSettings.Port}\"?"
+                            + $"QueryPort=\"{serverSettings.QueryPort}\"?"
+                            + $" -WinLiveMaxPlayers=\"{serverSettings.MaxPlayers}\" {battleyeOption} {mods}");
 
             return content.ToString();
         }
+
+
+
 
 
         private string ReadStartBatContent(string startBatPath)
@@ -915,7 +921,7 @@ namespace ASAManager
                     await updateTask;
 
                     // Additional logging
-                    outputTextBox.AppendText($"Update completed. Exit Code: {updateTask.Status}\n");
+                    outputTextBox.AppendText($"Update completed.\n");
                 }
                 else
                 {
@@ -955,7 +961,7 @@ namespace ASAManager
                 await DownloadMcrcon(mcrconPath);
             }
 
-            string rconCommand = $"\"" + txtRconCommand.Text+"\"";
+            string rconCommand = $"\"" + txtRconCommand.Text + "\"";
 
             // Execute the RCON command and capture the output
             string output = await ExecuteRconCommandAsync(mcrconPath, rconIp, rconPort, rconAdminPassword, rconCommand);

@@ -485,8 +485,8 @@ namespace ASAManager
 
                 Task installationTask = Task.Run(() => RunCommand(installCommand));
 
-                // Delay for a short period
-                await Task.Delay(5000); // 5000 milliseconds (5 seconds)
+                // Wait for the completion of the installation task
+                await installationTask;
 
                 // Continue only if the installation is still in progress
                 if (!installationTask.IsCompleted)
@@ -505,9 +505,6 @@ namespace ASAManager
                         outputTextBox.AppendText($"start.bat has been created in {startBatPath}\n");
                     }
                 }
-
-                // Wait for the completion of the installation task
-                await installationTask;
 
                 // Additional logging
                 outputTextBox.AppendText($"Installation completed.\n");

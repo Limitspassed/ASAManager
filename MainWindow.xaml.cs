@@ -1044,48 +1044,57 @@ namespace ASAManager
             }
 
             LogAction("Backup timer ticked. Initiating backup process...");
-            if (int.TryParse(txtKeepOldestBackup.Text, out int keepOldestDays))
+
+            // Iterate over each of the servers
+            foreach (string server in cmbServerSelection.Items)
             {
+                // Get the selected server name from the combo box
+                string selectedServer = cmbServerSelection.SelectedItem?.ToString();
+                if (!string.IsNullOrEmpty(selectedServer))
+                    PerformBackup(selectedServer);
+            }
+        }
+
+        private void PerformBackup(string selectedServer)
+        {
+            // Perform the backup operation
+            try
+            {
+                // Convert string to int, if it fails use 0
+                int keepOldestDays = int.TryParse(txtKeepOldestBackup.Text, out int oldestDays) ? oldestDays : 0;
+
                 // Backup location string
                 string backupLocation = txtBackupLocation.Text;
 
                 // Get the current map name from the Map text box
                 string mapName = txtMap.Text.Trim();
 
-                // Get the selected server name from the combo box
-                string selectedServer = cmbServerSelection.SelectedItem?.ToString();
+                // Create a new folder with the current date and time inside the server's folder
+                string serverBackupFolder = Path.Combine(backupLocation, selectedServer, $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
+                Directory.CreateDirectory(serverBackupFolder);
 
-                // Perform the backup operation
-                try
-                {
-                    // Create a new folder with the current date and time inside the server's folder
-                    string serverBackupFolder = Path.Combine(backupLocation, selectedServer, $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
-                    Directory.CreateDirectory(serverBackupFolder);
+                // Copy Ark world file to the new folder
+                string worldFilePath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}.ark");
+                string destinationWorldPath = Path.Combine(serverBackupFolder, $"{mapName}.ark");
+                File.Copy(worldFilePath, destinationWorldPath, true);
 
-                    // Copy Ark world file to the new folder
-                    string worldFilePath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}.ark");
-                    string destinationWorldPath = Path.Combine(serverBackupFolder, $"{mapName}.ark");
-                    File.Copy(worldFilePath, destinationWorldPath, true);
+                // Copy AntiCorruptionBackup file to the new folder
+                string antiCorruptionBackupPath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}_AntiCorruptionBackup.bak");
+                string destinationAntiCorruptionBackupPath = Path.Combine(serverBackupFolder, $"{mapName}_AntiCorruptionBackup.bak");
+                File.Copy(antiCorruptionBackupPath, destinationAntiCorruptionBackupPath, true);
 
-                    // Copy AntiCorruptionBackup file to the new folder
-                    string antiCorruptionBackupPath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}_AntiCorruptionBackup.bak");
-                    string destinationAntiCorruptionBackupPath = Path.Combine(serverBackupFolder, $"{mapName}_AntiCorruptionBackup.bak");
-                    File.Copy(antiCorruptionBackupPath, destinationAntiCorruptionBackupPath, true);
+                // Could add logic here for backing up ark profile files, etc.
 
-                    // Could add logic here for backing up ark profile files, etc.
+                // Delete old backups
+                DeleteOldBackups(Path.Combine(backupLocation, selectedServer), keepOldestDays);
 
-                    // Delete old backups
-                    DeleteOldBackups(Path.Combine(backupLocation, selectedServer), keepOldestDays);
-
-                    LogAction($"Backup completed. Location: {serverBackupFolder}");
-                }
-                catch (Exception ex)
-                {
-                    LogAction($"Error during backup: {ex.Message}");
-                }
+                LogAction($"Backup completed. Location: {serverBackupFolder}");
+            }
+            catch (Exception ex)
+            {
+                LogAction($"Error during backup: {ex.Message}");
             }
         }
-
 
 
         private void DeleteOldBackups(string backupLocation, int keepOldestDays)

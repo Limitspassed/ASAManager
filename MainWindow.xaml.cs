@@ -22,6 +22,7 @@ using System.Net;
 using Path = System.IO.Path;
 using System.Net.Http;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace ASAManager
 {
@@ -1011,6 +1012,50 @@ namespace ASAManager
                 Console.WriteLine($"Error saving JSON: {ex.Message}");
             }
         }
+        private ServerSettings LoadServerSettings(string serverName)
+        {
+            ServerSettings loadedSettings = null;
+
+            // Use DefaultServer if none provided
+            if(String.IsNullOrWhiteSpace(serverName)) 
+                serverName = "DefaultServer";
+
+            // Assuming the same server name and folder path logic as in SaveSettingsToJson
+            string serverFolderPath = Path.Combine(txtServerPath.Text, serverName, "ShooterGame", "Saved", "Config", "WindowsServer");
+
+            // Ensure the directory exists
+            if (Directory.Exists(serverFolderPath))
+            {
+                string jsonFilePath = Path.Combine(serverFolderPath, $"{serverName}.json");
+
+                // Check if the JSON file exists
+                if (File.Exists(jsonFilePath))
+                {
+                    try
+                    {
+                        // Read JSON file content
+                        string json = File.ReadAllText(jsonFilePath);
+
+                        // Deserialize JSON to ServerSettings object
+                        loadedSettings = JsonConvert.DeserializeObject<ServerSettings>(json);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogAction($"\nError loading JSON: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    LogAction($"\nJSON file not found at: {jsonFilePath}");
+                }
+            }
+            else
+            {
+                LogAction($"\nDirectory not found: {serverFolderPath}");
+            }
+
+            return loadedSettings;
+        }
         private void chkEnableRCON_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -1051,14 +1096,16 @@ namespace ASAManager
             // Iterate over each of the servers
             foreach (string server in cmbServerSelection.Items)
             {
-                // Get the selected server name from the combo box
-                string selectedServer = cmbServerSelection.SelectedItem?.ToString();
-                if (!string.IsNullOrEmpty(selectedServer))
-                    PerformBackup(selectedServer);
+                // Get server settings
+                ServerSettings serverSettings = LoadServerSettings(server);
+
+                // And perform backup if not empty
+                if (serverSettings != null)
+                    PerformBackup(serverSettings);
             }
         }
 
-        private void PerformBackup(string selectedServer)
+        private void PerformBackup(ServerSettings serverSettings)
         {
             // Perform the backup operation
             try
@@ -1067,29 +1114,29 @@ namespace ASAManager
                 int keepOldestDays = int.TryParse(txtKeepOldestBackup.Text, out int oldestDays) ? oldestDays : 0;
 
                 // Backup location string
-                string backupLocation = txtBackupLocation.Text;
+                string backupLocation = serverSettings.BackupLocation;
 
                 // Get the current map name from the Map text box
-                string mapName = txtMap.Text.Trim();
+                string mapName = serverSettings.Map;
 
                 // Create a new folder with the current date and time inside the server's folder
-                string serverBackupFolder = Path.Combine(backupLocation, selectedServer, $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
+                string serverBackupFolder = Path.Combine(backupLocation, serverSettings.ServerName, $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}");
                 Directory.CreateDirectory(serverBackupFolder);
 
                 // Copy Ark world file to the new folder
-                string worldFilePath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}.ark");
+                string worldFilePath = Path.Combine(txtServerPath.Text, serverSettings.ServerName, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}.ark");
                 string destinationWorldPath = Path.Combine(serverBackupFolder, $"{mapName}.ark");
                 File.Copy(worldFilePath, destinationWorldPath, true);
 
                 // Copy AntiCorruptionBackup file to the new folder
-                string antiCorruptionBackupPath = Path.Combine(txtServerPath.Text, selectedServer, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}_AntiCorruptionBackup.bak");
+                string antiCorruptionBackupPath = Path.Combine(txtServerPath.Text, serverSettings.ServerName, "ShooterGame", "Saved", "SavedArks", $"{mapName}", $"{mapName}_AntiCorruptionBackup.bak");
                 string destinationAntiCorruptionBackupPath = Path.Combine(serverBackupFolder, $"{mapName}_AntiCorruptionBackup.bak");
                 File.Copy(antiCorruptionBackupPath, destinationAntiCorruptionBackupPath, true);
 
                 // Could add logic here for backing up ark profile files, etc.
 
                 // Delete old backups
-                DeleteOldBackups(Path.Combine(backupLocation, selectedServer), keepOldestDays);
+                DeleteOldBackups(Path.Combine(backupLocation, serverSettings.ServerName), keepOldestDays);
 
                 LogAction($"Backup completed. Location: {serverBackupFolder}");
             }

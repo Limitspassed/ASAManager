@@ -1100,7 +1100,7 @@ namespace ASAManager
                 ServerSettings serverSettings = LoadServerSettings(server);
 
                 // And perform backup if not empty
-                if (serverSettings != null)
+                if (serverSettings != null && serverSettings.ScheduledBackup)
                     PerformBackup(serverSettings);
             }
         }

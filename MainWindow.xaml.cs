@@ -553,6 +553,9 @@ namespace ASAManager
                             + $"listen?SessionName=\"{serverSettings.ServerName}\"?"
                             + $"Port=\"{serverSettings.Port}\"?"
                             + $"QueryPort=\"{serverSettings.QueryPort}\"?"
+                            + $"RCONEnabled=\"{chkEnableRCON.IsChecked}\"?"
+                            + $"RCONPort=\"{txtRconPort.Text}\"?"
+                            + $"ServerAdminPassword=\"{txtAdminPassword.Text}\"?"
                             + $" -WinLiveMaxPlayers=\"{serverSettings.MaxPlayers}\" {battleyeOption} {mods}");
 
             return content.ToString();

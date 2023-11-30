@@ -370,8 +370,15 @@ namespace ASAManager
             // Get the line that contains the [ServerSettings] key
             string serverSettingsLine = iniContents[serverSettingsIndex..].Split('\n')[0];
 
-            // Insert the ActiveMods line below the [ServerSettings] line
-            iniContents = iniContents.Insert(serverSettingsIndex + 1 + serverSettingsLine.Length, "\nActiveMods=");
+            // Check if the ActiveMods line already exists
+            int activeModsIndex = iniContents.IndexOf("ActiveMods=");
+
+            // If the [ServerSettings] key is not found, return
+            if (activeModsIndex == -1)
+            {
+                // Insert the ActiveMods line below the [ServerSettings] line
+                iniContents = iniContents.Insert(serverSettingsIndex + 1 + serverSettingsLine.Length, "\nActiveMods=");
+            }
 
             // Write the updated ini file
             File.WriteAllText(iniPath, iniContents);
